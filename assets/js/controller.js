@@ -59,13 +59,30 @@ class MovieController {
         if (isCurrentlyFavorite) {
             this.model.removeFromFavorites(movie.id);
             if (button) this.view.updateFavoriteButton(button, false);
+            
+            // Also update any other buttons in search results with same movie ID
+            this.updateAllButtonsForMovie(movie.id, false);
         } else {
             this.model.addToFavorites(movie);
             if (button) this.view.updateFavoriteButton(button, true);
+            
+            // Also update any other buttons in search results with same movie ID
+            this.updateAllButtonsForMovie(movie.id, true);
         }
         
         // Update favorites display
         this.updateFavoritesView();
+    }
+    
+    // Update all buttons for a specific movie ID
+    updateAllButtonsForMovie(movieId, isFavorite) {
+        // Find all buttons in search results for this movie
+        const allButtons = document.querySelectorAll(`.favorite-button[data-id="${movieId}"]`);
+        allButtons.forEach(btn => {
+            if (btn !== document.activeElement) { // Skip the button that was just clicked
+                this.view.updateFavoriteButton(btn, isFavorite);
+            }
+        });
     }
 
     // Update favorites view
