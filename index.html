@@ -3,9 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>IMDb Search App</title>
+    <link rel="stylesheet" href="assets/style/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+    <script>
+        // Global fallback for placeholder image
+        function fallbackToRemotePlaceholder(img) {
+            img.onerror = null; // Prevent infinite loop
+            img.src = 'https://via.placeholder.com/100x150?text=Movie';
+        }
+    </script>
 </head>
 <body>
+    <header>
+        <h1>IMDb Search App</h1>
+    </header>
     
+    <div class="container">
+        <div class="search-section">
+            <h2>Search Movies & TV Shows</h2>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Enter a title...">
+                <button id="search-button">Search</button>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <h2>Results</h2>
+            <div id="results-container"></div>
+        </div>
+        
+        <div class="favorites-section">
+            <h2>My Favorites</h2>
+            <div id="favorites-container"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

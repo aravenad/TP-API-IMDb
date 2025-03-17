@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+header {
+    background-color: #f3ce13;
+    color: #000;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-section, .results-section, .favorites-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.search-box {
+    display: flex;
+}
+
+#search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+}
+
+#search-button {
+    padding: 10px 15px;
+    background-color: #f3ce13;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#search-button:hover {
+    background-color: #e0bd0e;
+}
+
+.movie-card {
+    display: flex;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.movie-poster {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    background-color: #eee;
+    display: block;
+}
+
+.movie-poster[src*="placeholder"] {
+    object-fit: contain;
+    padding: 5px;
+}
+
+.movie-info {
+    padding: 15px;
+    flex: 1;
+}
+
+.movie-title {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.movie-year {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.favorite-button {
+    background-color: #f3ce13;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.favorite-button:hover {
+    background-color: #e0bd0e;
+}
+
+.favorite-button.remove {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.favorite-button.remove:hover {
+    background-color: #e60000;
+}
+
+.no-results, .loading {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+.loading:after {
+    content: "...";
+    animation: dots 1.5s steps(5, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% {
+        content: ".";
+    }
+    40% {
+        content: "..";
+    }
+    60%, 100% {
+        content: "...";
+    }
+}
+
+.imdb-link {
+    display: inline-block;
+    margin: 8px 0;
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.imdb-link:hover {
+    text-decoration: underline;
+}
+
+.actors {
+    color: #555;
+    font-size: 14px;
+    margin: 5px 0;
+}
