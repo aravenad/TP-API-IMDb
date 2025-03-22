@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMDb Search App</title>
+    <title>IMDb Search</title>
     <link rel="stylesheet" href="assets/style/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+    <!-- SF Pro font -->
+    <link rel="stylesheet" href="https://cdn.apple.com/fonts/sf-pro/sf-pro.css">
     <script>
         // Global fallback for placeholder image
         function fallbackToRemotePlaceholder(img) {
             img.onerror = null; // Prevent infinite loop
-            img.src = 'https://via.placeholder.com/100x150?text=Movie';
+            img.src = 'https://via.placeholder.com/120x180?text=Movie';
         }
     </script>
 </head>
 <body>
     <header>
-        <h1>IMDb Search App</h1>
+        <h1>IMDb Search</h1>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">🌓</button>
     </header>
     
     <div class="container">
         <div class="search-section">
             <h2>Search Movies & TV Shows</h2>
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Enter a title...">
-                <button id="search-button">Search</button>
+                <input type="text" id="search-input" placeholder="Enter a title..." aria-label="Search for movies and TV shows">
+                <button id="search-button" aria-label="Search">Search</button>
             </div>
         </div>
         
@@ -40,6 +43,25 @@
     </div>
 
     <script type="module" src="assets/js/main.js"></script>
-    <script type="module" src="assets/js/animations.js"></script>
+    <script>
+        // Dark mode functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Check for saved user preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark-mode');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+        
+        // Enhance loading state display
+        const showLoading = (container) => {
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+        };
+    </script>
 </body>
 </html>
