@@ -3,11 +3,15 @@
 import MovieModel from './modelMovie.js';
 import view from './view.js';
 import MovieController from './controller.js';
+import { initializeDragAndDrop } from './dragdrop.js';
 
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     try {
         const app = new MovieController(new MovieModel(), view);
+        
+        // Initialize drag and drop functionality for favorites
+        initializeDragAndDrop();
     } catch (error) {
         console.error("Error initializing application:", error);
         document.body.innerHTML = `
