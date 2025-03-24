@@ -1,92 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recherche IMDb</title>
-    <link rel="stylesheet" href="assets/style/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+    <link rel="stylesheet" href="assets/style/style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>"
+    />
     <!-- Police SF Pro -->
-    <link rel="stylesheet" href="https://cdn.apple.com/fonts/sf-pro/sf-pro.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.apple.com/fonts/sf-pro/sf-pro.css"
+    />
     <script>
-        // Fonction de repli pour l'image par défaut en cas d'erreur de chargement
-        function fallbackToRemotePlaceholder(img) {
-            img.onerror = null; // Évite une boucle infinie
-            img.src = 'https://via.placeholder.com/120x180?text=Film';
-        }
+      function fallbackToRemotePlaceholder(img) {
+        img.onerror = null;
+        img.src = "https://via.placeholder.com/120x180?text=Film";
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Recherche IMDb</h1>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Basculer en mode sombre">🌓</button>
+      <h1>Recherche IMDb</h1>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Basculer en mode sombre"
+      >
+        🌓
+      </button>
     </header>
-    
+
     <div class="container">
-        <div class="search-section">
-            <h2>Rechercher des Films et Séries TV</h2>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Entrez un titre..." aria-label="Rechercher des films et séries TV">
-                <button id="search-button" aria-label="Rechercher">Rechercher</button>
-                <div id="suggestions-container" class="suggestions-container"></div>
-            </div>
+      <div class="search-section">
+        <h2>Rechercher des Films et Séries TV</h2>
+        <div class="search-box">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Entrez un titre..."
+            aria-label="Rechercher des films et des séries TV"
+          />
+          <button id="search-button" aria-label="Rechercher">Rechercher</button>
+          <div id="suggestions-container" class="suggestions-container"></div>
         </div>
-        
-        <div class="main-content">
-            <div class="content-column primary">
-                <div class="results-section">
-                    <h2>Résultats</h2>
-                    <div id="results-container">
-                        <div class="no-results">
-                            Recherchez un film ou une série pour voir les résultats
-                        </div>
-                    </div>
-                </div>
+      </div>
+
+      <div class="main-content">
+        <div class="content-column primary">
+          <div class="results-section">
+            <h2>Résultats</h2>
+            <div id="results-container">
+              <div class="no-results">
+                Recherchez un film ou une série TV pour voir les résultats
+              </div>
             </div>
-            
-            <div class="content-column secondary">
-                <div class="favorites-section">
-                    <h2>Mes Favoris</h2>
-                    <div id="favorites-container">
-                        <!-- Conteneur vide au démarrage -->
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <div class="content-column secondary">
+          <div class="favorites-section">
+            <h2>Mes Favoris</h2>
+            <div id="favorites-container">
+              <!-- Conteneur vide au démarrage -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="assets/js/utils/animations.js"></script>
     <script>
-        // Fonctionnalité de mode sombre
-        const themeToggle = document.getElementById('theme-toggle');
-        
-        // Vérifie les préférences utilisateur sauvegardées
-        if (localStorage.getItem('theme') === 'dark' || 
-            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.body.classList.add('dark-mode');
-        }
-        
-        // Gère le basculement du thème et sauvegarde la préférence
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        });
-        
-        // Affiche un indicateur de chargement dans le conteneur spécifié
-        const showLoading = (container) => {
-            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-        };
-        
-        // Vérifie si le conteneur de favoris est vide
-        const checkFavoritesEmpty = () => {
-            // L'état vide est géré par CSS
-        };
-        
-        // Exécution au chargement de la page
-        document.addEventListener('DOMContentLoaded', () => {
-            // Pas besoin de vérifier les favoris vides
-        });
+      const themeToggle = document.getElementById("theme-toggle");
+
+      if (
+        localStorage.getItem("theme") === "dark" ||
+        (!localStorage.getItem("theme") &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.body.classList.add("dark-mode");
+      }
+
+      themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem(
+          "theme",
+          document.body.classList.contains("dark-mode") ? "dark" : "light"
+        );
+      });
+
+      const showLoading = (container) => {
+        container.innerHTML =
+          '<div class="loading"><div class="loading-spinner"></div></div>';
+      };
+
+      const checkFavoritesEmpty = () => {
+        // L'état vide est géré par CSS
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Pas besoin de vérifier les favoris vides
+      });
     </script>
-</body>
+  </body>
 </html>

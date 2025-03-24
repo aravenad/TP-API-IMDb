@@ -1,4 +1,4 @@
-/* Favorites section specific styling */
+/* Style spécifique à la section des favoris */
 .favorites-section .movie-card {
     animation: none !important;
     flex-direction: column;
@@ -6,8 +6,8 @@
     transition: none !important;
     border: 1px solid var(--border-color);
     position: relative;
-    cursor: grab; /* Indicates the element is draggable */
-    user-select: none; /* Prevents text selection during dragging */
+    cursor: grab; /* Indique que l'élément est déplaçable */
+    user-select: none; /* Empêche la sélection de texte pendant le déplacement */
 }
 
 .favorites-section .movie-card.dragging {
@@ -25,7 +25,7 @@
     transition: opacity 0.2s ease;
 }
 
-/* Drop placeholder styling */
+/* Style du repère de dépôt */
 .drop-placeholder {
     background-color: var(--primary-color);
     height: 4px;
@@ -34,7 +34,7 @@
     transition: all 0.2s ease;
 }
 
-/* Ensure minimum height for favorites container */
+/* Hauteur minimale pour le conteneur des favoris */
 #favorites-container {
     min-height: 100px;
 }
@@ -72,15 +72,15 @@
 
 .favorites-section .actors,
 .favorites-section .imdb-link {
-    display: none; /* Hide less important info in favorites */
+    display: none; /* Cache les infos moins importantes dans les favoris */
 }
 
-/* Empty state for favorites */
+/* État vide pour les favoris */
 .favorites-empty {
     display: none;
 }
 
-/* Correct height for empty favorites container */
+/* Hauteur correcte pour un conteneur de favoris vide */
 #favorites-container:empty {
     min-height: 338px;
     background-color: var(--background-color);
@@ -95,13 +95,13 @@
     transition: all 0.3s ease;
 }
 
-/* Avoid abrupt layout changes */
+/* Éviter les changements brusques de mise en page */
 #favorites-container {
     min-height: 338px;
     transition: none !important;
 }
 
-/* Heart icon for empty favorites container */
+/* Icône de cœur pour le conteneur de favoris vide */
 #favorites-container:empty::before {
     content: "❤️";
     font-size: 48px;
@@ -109,14 +109,14 @@
     margin-bottom: 20px;
 }
 
-/* Text for empty favorites container */
+/* Texte pour le conteneur de favoris vide */
 #favorites-container:empty::after {
     content: "Ajoutez des films à vos favoris";
     color: var(--text-secondary);
     font-style: italic;
 }
 
-/* Improved style for favorites section */
+/* Style amélioré pour la section des favoris */
 .favorites-section h2 {
     margin-bottom: 20px;
     position: static;

@@ -9,7 +9,7 @@ const view = {
     // Icône de film simple encodée en Base64
     placeholderImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTUwIiBmaWxsPSIjODg4ODg4Ij48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2VlZWVlZSIvPjxwYXRoIGQ9Ik0zMCA0MEg3MHYySDMwek0zMCA4MEg3MHYySDMwek0zMCAxMjBINzB2MkgzMHpNMjAgMjBIODB2MTBIMjB6TTIwIDYwSDgwdjEwSDIwek0yMCAxMDBIODB2MTBIMjB6Ii8+PHRleHQgeD0iNTAiIHk9IjQ1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1vdmllPC90ZXh0Pjwvc3ZnPg==',
     // URL de secours en cas d'échec du Base64
-    fallbackPlaceholderUrl: 'https://via.placeholder.com/100x150?text=Movie',
+    fallbackPlaceholderUrl: 'https://via.placeholder.com/100x150?text=Film',
 
     // Configure les écouteurs d'événements avec des fonctions de rappel
     bindSearchEvents(handleSearch, handleEnterKey) {
@@ -40,14 +40,12 @@ const view = {
     setImagePlaceholder(imgElement) {
         imgElement.alt = 'Image du film';
         imgElement.onerror = () => {
-            // Essaie d'abord notre image en base64
             imgElement.src = this.placeholderImage;
             imgElement.alt = 'Image du film';
             
-            // Si l'image en base64 échoue, utilise l'URL distante en dernier recours
             imgElement.onerror = () => {
                 imgElement.src = this.fallbackPlaceholderUrl;
-                imgElement.onerror = null; // Empêche la gestion d'erreurs supplémentaires
+                imgElement.onerror = null;
             };
         };
     },
@@ -62,13 +60,11 @@ const view = {
         this.resultsContainer.innerHTML = '';
         
         results.forEach(movie => {
-            // Ignore si le film n'est pas un objet
             if (!movie || typeof movie !== 'object') {
                 console.warn("Élément de film invalide:", movie);
                 return;
             }
             
-            // Utilise un try-catch pour gérer les problèmes potentiels avec les données du film
             try {
                 const movieId = movie['#IMDB_ID'] || `movie_${Math.random().toString(36).substr(2, 9)}`;
                 const isFavorite = isFavoriteCallback(movieId);
@@ -76,7 +72,6 @@ const view = {
                 const movieCard = document.createElement('div');
                 movieCard.className = 'movie-card';
                 
-                // Extrait les propriétés avec les noms corrects de la réponse
                 const title = movie['#TITLE'] || 'Titre inconnu';
                 const year = movie['#YEAR'] || 'Année non disponible';
                 const rank = movie['#RANK'] || 'Non classé';
@@ -98,7 +93,6 @@ const view = {
                     </div>
                 `;
                 
-                // Définit un placeholder pour l'image si elle ne se charge pas
                 const posterImage = movieCard.querySelector('.movie-poster');
                 this.setImagePlaceholder(posterImage);
                 
@@ -139,7 +133,6 @@ const view = {
     displayFavorites(favorites, toggleFavoriteCallback) {
         this.favoritesContainer.innerHTML = '<p class="loading">Chargement des favoris...</p>';
         
-        // Utilisation de setTimeout pour permettre à l'UI de se mettre à jour avec le message de chargement
         setTimeout(() => {
             if (!favorites || favorites.length === 0) {
                 this.favoritesContainer.innerHTML = '<p class="no-results">Aucun favori ajouté pour le moment.</p>';
@@ -169,7 +162,6 @@ const view = {
                         </div>
                     `;
                     
-                    // Définit un placeholder pour l'image si elle ne se charge pas
                     const posterImage = movieCard.querySelector('.movie-poster');
                     this.setImagePlaceholder(posterImage);
                     
