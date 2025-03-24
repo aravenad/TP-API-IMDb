@@ -1,10 +1,10 @@
 // Main application file - entry point that initializes the app
 
-import MovieModel from './modelMovie.js';
-import view from './view.js';
-import MovieController from './controller.js';
-import { initializeDragAndDrop } from './dragdrop.js';
-import { initSuggestions } from './suggestions.js';
+import MovieModel from './models/movie.js';
+import view from './views/view.js';
+import MovieController from './controllers/controller.js';
+import { initializeDragAndDrop } from './utils/dragdrop.js';
+import { initSuggestions } from './utils/suggestions.js';
 
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
