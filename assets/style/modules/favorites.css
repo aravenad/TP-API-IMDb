@@ -1,0 +1,128 @@
+/* Favorites section specific styling */
+.favorites-section .movie-card {
+    animation: none !important;
+    flex-direction: column;
+    margin-bottom: 20px;
+    transition: none !important;
+    border: 1px solid var(--border-color);
+    position: relative;
+    cursor: grab; /* Indicates the element is draggable */
+    user-select: none; /* Prevents text selection during dragging */
+}
+
+.favorites-section .movie-card.dragging {
+    opacity: 0.6;
+    box-shadow: 0 0 20px var(--shadow-color);
+    z-index: 10;
+}
+
+.favorites-section .movie-card:hover .drag-indicator {
+    opacity: 1;
+}
+
+.favorites-section .drag-indicator {
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+/* Drop placeholder styling */
+.drop-placeholder {
+    background-color: var(--primary-color);
+    height: 4px;
+    margin: 8px 0;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+/* Ensure minimum height for favorites container */
+#favorites-container {
+    min-height: 100px;
+}
+
+.favorites-section .movie-poster {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.favorites-section .movie-info {
+    padding: 16px;
+    text-align: center;
+}
+
+.favorites-section .movie-title {
+    font-size: 16px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.favorites-section .movie-year {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.favorites-section .favorite-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    width: 100%;
+}
+
+.favorites-section .actors,
+.favorites-section .imdb-link {
+    display: none; /* Hide less important info in favorites */
+}
+
+/* Empty state for favorites */
+.favorites-empty {
+    display: none;
+}
+
+/* Correct height for empty favorites container */
+#favorites-container:empty {
+    min-height: 338px;
+    background-color: var(--background-color);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Avoid abrupt layout changes */
+#favorites-container {
+    min-height: 338px;
+    transition: none !important;
+}
+
+/* Heart icon for empty favorites container */
+#favorites-container:empty::before {
+    content: "❤️";
+    font-size: 48px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* Text for empty favorites container */
+#favorites-container:empty::after {
+    content: "Ajoutez des films à vos favoris";
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Improved style for favorites section */
+.favorites-section h2 {
+    margin-bottom: 20px;
+    position: static;
+    padding-bottom: 0;
+}
+
+.favorites-section h2:after {
+    content: none;
+}

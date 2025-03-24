@@ -1,0 +1,75 @@
+/* Mobile adaptations */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .content-column.primary,
+    .content-column.secondary {
+        width: 100%;
+    }
+    
+    .movie-card {
+        flex-direction: column;
+    }
+    
+    .movie-poster {
+        width: 100%;
+        height: 200px;
+    }
+    
+    /* Mobile favorites adaptations */
+    .favorites-section .movie-card {
+        flex-direction: row;
+    }
+    
+    .favorites-section .movie-poster {
+        width: 80px;
+        height: 120px;
+        border-radius: 10px 0 0 10px;
+    }
+    
+    .favorites-section .movie-info {
+        text-align: left;
+    }
+    
+    .favorites-section .favorite-button {
+        width: auto;
+    }
+    
+    /* Mobile results adaptations */
+    .results-section .movie-card {
+        flex-direction: column;
+    }
+    
+    .results-section .movie-poster {
+        width: 100%;
+        height: 220px;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .results-section .movie-info {
+        padding: 20px;
+    }
+    
+    .results-section .action-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .results-section .favorite-button {
+        position: static;
+        width: 100%;
+        margin-top: 15px;
+        text-align: center;
+    }
+    
+    .results-section .imdb-link {
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,44 @@
+/* Layout and container styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+/* Main content columns layout */
+.main-content {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.content-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-column.primary {
+    flex: 2;
+}
+
+.content-column.secondary {
+    flex: 1;
+}
+
+/* Main sections styling */
+.search-section, .results-section, .favorites-section {
+    background-color: var(--card-background);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    height: fit-content;
+}
+
+/* Fixed favorites section on desktop */
+@media (min-width: 769px) {
+    .favorites-section {
+        position: sticky;
+        top: 100px;
+    }
+}

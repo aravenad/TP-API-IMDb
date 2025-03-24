@@ -1,0 +1,121 @@
+/* Common movie card styles */
+.movie-card {
+    display: flex;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--card-background);
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+/* Movie poster styling */
+.movie-poster {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    background-color: var(--background-color);
+    display: block;
+}
+
+.movie-poster[src*="placeholder"] {
+    object-fit: contain;
+    padding: 5px;
+}
+
+.movie-info {
+    padding: 20px;
+    flex: 1;
+}
+
+.movie-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: -0.3px;
+}
+
+.movie-year {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* Favorite buttons */
+.favorite-button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    color: white;
+    font-weight: 500;
+    transition: all var(--transition-speed);
+}
+
+.favorite-button:hover {
+    transform: scale(0.98);
+    background-color: #0062c8;
+}
+
+.favorite-button.remove {
+    background-color: #ff453a;
+}
+
+.favorite-button.remove:hover {
+    background-color: #e63031;
+}
+
+/* No results and loading states */
+.no-results, .loading {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 30px;
+    font-size: 18px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+/* Loading spinner animation */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+/* IMDb links */
+.imdb-link {
+    display: inline-block;
+    margin: 12px 0;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--transition-speed);
+}
+
+.imdb-link:hover {
+    opacity: 0.8;
+}
+
+/* Actor information */
+.actors {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin: 8px 0;
+    line-height: 1.4;
+}

@@ -1,0 +1,20 @@
+/* Base styles and reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color var(--transition-speed);
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}

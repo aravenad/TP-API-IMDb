@@ -1,0 +1,146 @@
+/* Results section styling */
+.results-section .movie-card {
+    display: flex;
+    margin-bottom: 25px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: var(--card-background);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: all var(--transition-speed);
+    border: 1px solid var(--border-color);
+}
+
+.results-section .movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+.results-section .movie-poster {
+    width: 140px;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 10px 0 0 10px;
+    transition: all var(--transition-speed);
+}
+
+.results-section .movie-info {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.results-section .movie-title {
+    font-size: 20px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+}
+
+.results-section .movie-year {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.results-section .actors {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin: 12px 0;
+    line-height: 1.5;
+}
+
+/* Links and buttons in results */
+.results-section .action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.results-section .imdb-link {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--transition-speed);
+    position: relative;
+    z-index: 2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: fit-content;
+}
+
+.results-section .imdb-link::after {
+    content: "→";
+    margin-left: 5px;
+    transition: transform var(--transition-speed);
+}
+
+.results-section .imdb-link:hover::after {
+    transform: translateX(3px);
+}
+
+.results-section .favorite-button {
+    margin-top: 0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    z-index: 2;
+}
+
+/* No results styling */
+.results-section .no-results {
+    background-color: var(--background-color);
+    padding: 40px;
+    text-align: center;
+    border-radius: 12px;
+    min-height: 338px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.results-section .no-results::before {
+    content: "🔍";
+    font-size: 48px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* Element positioning without changing HTML structure */
+.results-section .movie-info {
+    position: relative;
+}
+
+.results-section .imdb-link {
+    position: relative;
+    z-index: 2;
+    max-width: calc(75% - 230px);
+}
+
+.results-section .favorite-button {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    z-index: 2;
+    margin-top: 0;
+}
+
+/* Same height for both containers */
+#results-container {
+    min-height: 338px;
+}

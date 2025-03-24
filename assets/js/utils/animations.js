@@ -1,9 +1,9 @@
 /**
- * Apple-style animations and interactions
+ * Animations et interactions de style Apple
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Add subtle hover effect to all interactive elements
+    // Ajoute un effet de survol subtil à tous les éléments interactifs
     const interactiveElements = document.querySelectorAll('button, .imdb-link');
     
     interactiveElements.forEach(element => {
@@ -11,19 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
         element.addEventListener('mouseleave', removeHoverEffect);
     });
     
-    // Observe new elements being added to the DOM
+    // Observe les nouveaux éléments ajoutés au DOM
     const observer = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
             if (mutation.addedNodes.length) {
                 mutation.addedNodes.forEach(node => {
-                    if (node.nodeType === 1) { // Element node
+                    if (node.nodeType === 1) { // Nœud élément
                         const newInteractiveElements = node.querySelectorAll('button, .movie-card, .imdb-link');
                         newInteractiveElements.forEach(element => {
                             element.addEventListener('mouseenter', applyHoverEffect);
                             element.addEventListener('mouseleave', removeHoverEffect);
                         });
                         
-                        // If the node itself is an interactive element
+                        // Si le nœud lui-même est un élément interactif
                         if (node.matches('button, .movie-card, .imdb-link')) {
                             node.addEventListener('mouseenter', applyHoverEffect);
                             node.addEventListener('mouseleave', removeHoverEffect);
@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Start observing the document for added nodes
+    // Commence à observer le document pour les nœuds ajoutés
     observer.observe(document.body, { childList: true, subtree: true });
     
-    // Add smooth scroll behavior
+    // Ajoute un comportement de défilement fluide
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -67,19 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // No animations or observers for favorites to avoid flickering issues
     }
     
-    // Special animations for results section
+    // Observation spéciale pour la section des résultats
     const resultsContainer = document.getElementById('results-container');
     if (resultsContainer) {
         const resultsObserver = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
                 if (mutation.addedNodes.length) {
-                    // Check if this is a new search (container was cleared first)
+                    // Vérifie s'il s'agit d'une nouvelle recherche (le conteneur a été vidé d'abord)
                     const isNewSearch = Array.from(mutation.addedNodes).some(node => 
                         node.nodeType === 1 && 
                         (node.classList.contains('loading') || node.classList.contains('no-results'))
                     );
                     
-                    // Add staggered animation to new result cards
+                    // Ajoute une animation échelonnée aux nouvelles cartes de résultats
                     const newCards = Array.from(mutation.addedNodes).filter(
                         node => node.nodeType === 1 && node.classList.contains('movie-card')
                     );
@@ -97,9 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+/**
+ * Applique l'effet de survol à un élément
+ */
 function applyHoverEffect(e) {
     if (this.classList.contains('movie-card')) {
-        // Don't add additional transform if already transformed by CSS hover
+        // N'ajoute pas de transformation supplémentaire si déjà transformé par le survol CSS
         return;
     }
     
@@ -107,6 +110,9 @@ function applyHoverEffect(e) {
     this.style.transform = 'scale(0.98)';
 }
 
+/**
+ * Supprime l'effet de survol d'un élément
+ */
 function removeHoverEffect(e) {
     if (this.classList.contains('movie-card')) {
         return;
@@ -115,13 +121,20 @@ function removeHoverEffect(e) {
     this.style.transform = 'scale(1)';
 }
 
-// Remove animation function for favorite cards entirely
+/**
+ * Fonction d'animation pour les cartes favorites (désactivée)
+ * @param {HTMLElement} card - La carte à animer
+ */
 function animateFavoriteCard(card) {
-    // No animations to prevent flickering
-    // Function left as a stub for compatibility
+    // Pas d'animations pour éviter le scintillement
+    // Fonction laissée comme stub pour la compatibilité
 }
 
-// Add a function to animate result cards with staggered timing
+/**
+ * Anime les cartes de résultats avec un timing échelonné
+ * @param {HTMLElement} card - La carte à animer
+ * @param {number} index - L'index de la carte pour le timing échelonné
+ */
 function animateResultCard(card, index) {
     card.style.opacity = 0;
     card.style.transform = 'translateY(20px)';
@@ -130,10 +143,10 @@ function animateResultCard(card, index) {
         card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         card.style.opacity = 1;
         card.style.transform = 'translateY(0)';
-    }, 100 + (index * 100)); // Staggered delay based on card index
+    }, 100 + (index * 100)); // Délai échelonné basé sur l'index de la carte
 }
 
-// Export the animation module for potential reuse
+// Exporte le module d'animations pour une réutilisation potentielle
 export const animations = {
     applyHoverEffect,
     removeHoverEffect,

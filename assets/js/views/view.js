@@ -1,17 +1,17 @@
-// View - Handles DOM manipulation and UI rendering
+// Vue - Gère la manipulation du DOM et le rendu de l'interface utilisateur
 const view = {
-    // DOM elements
+    // Éléments du DOM
     searchInput: document.getElementById('search-input'),
     searchButton: document.getElementById('search-button'),
     resultsContainer: document.getElementById('results-container'),
     favoritesContainer: document.getElementById('favorites-container'),
     
-    // Base64 encoded simple film placeholder icon
+    // Icône de film simple encodée en Base64
     placeholderImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTUwIiBmaWxsPSIjODg4ODg4Ij48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2VlZWVlZSIvPjxwYXRoIGQ9Ik0zMCA0MEg3MHYySDMwek0zMCA4MEg3MHYySDMwek0zMCAxMjBINzB2MkgzMHpNMjAgMjBIODB2MTBIMjB6TTIwIDYwSDgwdjEwSDIwek0yMCAxMDBIODB2MTBIMjB6Ii8+PHRleHQgeD0iNTAiIHk9IjQ1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1vdmllPC90ZXh0Pjwvc3ZnPg==',
-    // Alternative URL backup in case the base64 fails for any reason
+    // URL de secours en cas d'échec du Base64
     fallbackPlaceholderUrl: 'https://via.placeholder.com/100x150?text=Movie',
 
-    // Set up event listeners with callback functions
+    // Configure les écouteurs d'événements avec des fonctions de rappel
     bindSearchEvents(handleSearch, handleEnterKey) {
         this.searchButton.addEventListener('click', handleSearch);
         this.searchInput.addEventListener('keypress', (e) => {
@@ -21,54 +21,54 @@ const view = {
         });
     },
 
-    // Get search query
+    // Récupère la requête de recherche
     getSearchQuery() {
         return this.searchInput.value.trim();
     },
 
-    // Show loading state
+    // Affiche l'état de chargement
     showLoading() {
-        this.resultsContainer.innerHTML = '<p class="loading">Searching...</p>';
+        this.resultsContainer.innerHTML = '<p class="loading">Recherche en cours...</p>';
     },
 
-    // Show error message
+    // Affiche un message d'erreur
     showError(message) {
-        this.resultsContainer.innerHTML = `<p class="no-results">Error: ${message}</p>`;
+        this.resultsContainer.innerHTML = `<p class="no-results">Erreur: ${message}</p>`;
     },
 
-    // Add helper method for handling image errors
+    // Méthode auxiliaire pour gérer les erreurs d'image
     setImagePlaceholder(imgElement) {
-        imgElement.alt = 'Movie placeholder';
+        imgElement.alt = 'Image du film';
         imgElement.onerror = () => {
-            // Try our base64 placeholder first
+            // Essaie d'abord notre image en base64
             imgElement.src = this.placeholderImage;
-            imgElement.alt = 'Movie placeholder';
+            imgElement.alt = 'Image du film';
             
-            // If base64 placeholder somehow fails, use remote URL as last resort
+            // Si l'image en base64 échoue, utilise l'URL distante en dernier recours
             imgElement.onerror = () => {
                 imgElement.src = this.fallbackPlaceholderUrl;
-                imgElement.onerror = null; // Prevent further error handling
+                imgElement.onerror = null; // Empêche la gestion d'erreurs supplémentaires
             };
         };
     },
 
-    // Display search results
+    // Affiche les résultats de recherche
     displayResults(results, isFavoriteCallback, toggleFavoriteCallback) {
         if (!results || !Array.isArray(results) || results.length === 0) {
-            this.resultsContainer.innerHTML = '<p class="no-results">No results found.</p>';
+            this.resultsContainer.innerHTML = '<p class="no-results">Aucun résultat trouvé.</p>';
             return;
         }
         
         this.resultsContainer.innerHTML = '';
         
         results.forEach(movie => {
-            // Skip if the movie is not an object
+            // Ignore si le film n'est pas un objet
             if (!movie || typeof movie !== 'object') {
-                console.warn("Invalid movie item:", movie);
+                console.warn("Élément de film invalide:", movie);
                 return;
             }
             
-            // Use a try-catch to handle any potential issues with movie data
+            // Utilise un try-catch pour gérer les problèmes potentiels avec les données du film
             try {
                 const movieId = movie['#IMDB_ID'] || `movie_${Math.random().toString(36).substr(2, 9)}`;
                 const isFavorite = isFavoriteCallback(movieId);
@@ -76,10 +76,10 @@ const view = {
                 const movieCard = document.createElement('div');
                 movieCard.className = 'movie-card';
                 
-                // Extract properties with the correct names from the response
-                const title = movie['#TITLE'] || 'Unknown Title';
-                const year = movie['#YEAR'] || 'Year not available';
-                const rank = movie['#RANK'] || 'Not ranked';
+                // Extrait les propriétés avec les noms corrects de la réponse
+                const title = movie['#TITLE'] || 'Titre inconnu';
+                const year = movie['#YEAR'] || 'Année non disponible';
+                const rank = movie['#RANK'] || 'Non classé';
                 const actors = movie['#ACTORS'] || '';
                 const imdbUrl = movie['#IMDB_URL'] || `https://www.imdb.com/title/${movieId}`;
                 const posterUrl = movie['#IMG_POSTER'] || this.placeholderImage;
@@ -89,16 +89,16 @@ const view = {
                     <div class="movie-info">
                         <h3 class="movie-title">${title}</h3>
                         <p class="movie-year">${year}</p>
-                        <p>Rank: ${rank}</p>
-                        ${actors ? `<p class="actors">Actors: ${actors}</p>` : ''}
-                        <a href="${imdbUrl}" target="_blank" class="imdb-link">View on IMDb</a>
+                        <p>Classement: ${rank}</p>
+                        ${actors ? `<p class="actors">Acteurs: ${actors}</p>` : ''}
+                        <a href="${imdbUrl}" target="_blank" class="imdb-link">Voir sur IMDb</a>
                         <button class="favorite-button ${isFavorite ? 'remove' : ''}" data-id="${movieId}">
-                            ${isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                            ${isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
                         </button>
                     </div>
                 `;
                 
-                // Set placeholder for image if it fails to load
+                // Définit un placeholder pour l'image si elle ne se charge pas
                 const posterImage = movieCard.querySelector('.movie-poster');
                 this.setImagePlaceholder(posterImage);
                 
@@ -119,30 +119,30 @@ const view = {
                 
                 this.resultsContainer.appendChild(movieCard);
             } catch (error) {
-                console.error("Error rendering movie card:", error, movie);
+                console.error("Erreur lors du rendu de la carte du film:", error, movie);
             }
         });
     },
 
-    // Update favorite button state
+    // Met à jour l'état du bouton favori
     updateFavoriteButton(button, isFavorite) {
         if (isFavorite) {
             button.classList.add('remove');
-            button.textContent = 'Remove from favorites';
+            button.textContent = 'Retirer des favoris';
         } else {
             button.classList.remove('remove');
-            button.textContent = 'Add to favorites';
+            button.textContent = 'Ajouter aux favoris';
         }
     },
 
-    // Display favorites with loading state
+    // Affiche les favoris avec état de chargement
     displayFavorites(favorites, toggleFavoriteCallback) {
-        this.favoritesContainer.innerHTML = '<p class="loading">Loading favorites...</p>';
+        this.favoritesContainer.innerHTML = '<p class="loading">Chargement des favoris...</p>';
         
-        // Using setTimeout to allow the UI to update with the loading message
+        // Utilisation de setTimeout pour permettre à l'UI de se mettre à jour avec le message de chargement
         setTimeout(() => {
             if (!favorites || favorites.length === 0) {
-                this.favoritesContainer.innerHTML = '<p class="no-results">No favorites added yet.</p>';
+                this.favoritesContainer.innerHTML = '<p class="no-results">Aucun favori ajouté pour le moment.</p>';
                 return;
             }
             
@@ -156,20 +156,20 @@ const view = {
                     const posterUrl = movie.image || this.placeholderImage;
                     
                     movieCard.innerHTML = `
-                        <img src="${posterUrl}" alt="${movie.title || 'Unknown'}" class="movie-poster">
+                        <img src="${posterUrl}" alt="${movie.title || 'Inconnu'}" class="movie-poster">
                         <div class="movie-info">
-                            <h3 class="movie-title">${movie.title || 'Unknown Title'}</h3>
-                            <p class="movie-year">${movie.year || 'Year not available'}</p>
-                            ${movie.rank ? `<p>Rank: ${movie.rank}</p>` : ''}
-                            ${movie.actors ? `<p class="actors">Actors: ${movie.actors}</p>` : ''}
-                            ${movie.imdb_url ? `<a href="${movie.imdb_url}" target="_blank" class="imdb-link">View on IMDb</a>` : ''}
+                            <h3 class="movie-title">${movie.title || 'Titre inconnu'}</h3>
+                            <p class="movie-year">${movie.year || 'Année non disponible'}</p>
+                            ${movie.rank ? `<p>Classement: ${movie.rank}</p>` : ''}
+                            ${movie.actors ? `<p class="actors">Acteurs: ${movie.actors}</p>` : ''}
+                            ${movie.imdb_url ? `<a href="${movie.imdb_url}" target="_blank" class="imdb-link">Voir sur IMDb</a>` : ''}
                             <button class="favorite-button remove" data-id="${movie.id}">
-                                Remove from favorites
+                                Retirer des favoris
                             </button>
                         </div>
                     `;
                     
-                    // Set placeholder for image if it fails to load
+                    // Définit un placeholder pour l'image si elle ne se charge pas
                     const posterImage = movieCard.querySelector('.movie-poster');
                     this.setImagePlaceholder(posterImage);
                     
@@ -181,7 +181,7 @@ const view = {
                     
                     this.favoritesContainer.appendChild(movieCard);
                 } catch (error) {
-                    console.error("Error rendering favorite movie card:", error, movie);
+                    console.error("Erreur lors du rendu de la carte du film favori:", error, movie);
                 }
             });
         }, 10);

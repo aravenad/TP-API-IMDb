@@ -1,4 +1,4 @@
-// Model - Handles data and API operations for movies
+// Modèle - Gère les données et les opérations API pour les films
 class MovieModel {
     constructor() {
         this.API_BASE_URL = 'https://imdb.iamidiotareyoutoo.com/search';
@@ -10,37 +10,45 @@ class MovieModel {
                 this.favorites = JSON.parse(storedFavorites) || [];
             }
         } catch (error) {
-            console.error('Error loading favorites from localStorage:', error);
-            // Initialize as empty array if there's an error
+            console.error('Erreur lors du chargement des favoris depuis localStorage:', error);
+            // Initialise comme tableau vide en cas d'erreur
             this.favorites = [];
         }
     }
 
-    // Search movies from API
+    /**
+     * Recherche des films depuis l'API
+     * @param {string} query - La requête de recherche
+     * @returns {Promise<Array>} - Les résultats de la recherche
+     */
     async searchMovies(query) {
         try {
             const response = await fetch(`${this.API_BASE_URL}?q=${encodeURIComponent(query)}`);
             
             if (!response.ok) {
-                throw new Error(`Server responded with status: ${response.status}`);
+                throw new Error(`Le serveur a répondu avec le statut: ${response.status}`);
             }
             
             const data = await response.json();
             
-            // Check if the response is successful
+            // Vérifie si la réponse est réussie
             if (!data || !data.ok) {
-                throw new Error('API error: Invalid response.');
+                throw new Error('Erreur API: Réponse invalide.');
             }
             
-            // Return the results if available
+            // Renvoie les résultats s'ils sont disponibles
             return data.description && Array.isArray(data.description) ? data.description : [];
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Erreur lors de la récupération des données:', error);
             throw error;
         }
     }
 
-    // Add a movie to favorites
+    /**
+     * Ajoute un film aux favoris
+     * @param {Object} movie - Le film à ajouter aux favoris
+     * @returns {boolean} - Vrai si le film a été ajouté, faux sinon
+     */
     addToFavorites(movie) {
         if (!this.favorites.some(fav => fav.id === movie.id)) {
             this.favorites.push(movie);
@@ -50,7 +58,11 @@ class MovieModel {
         return false;
     }
 
-    // Remove a movie from favorites
+    /**
+     * Supprime un film des favoris
+     * @param {string} movieId - L'ID du film à supprimer
+     * @returns {boolean} - Vrai si le film a été supprimé, faux sinon
+     */
     removeFromFavorites(movieId) {
         const index = this.favorites.findIndex(fav => fav.id === movieId);
         if (index !== -1) {
@@ -61,21 +73,30 @@ class MovieModel {
         return false;
     }
 
-    // Save favorites to localStorage
+    /**
+     * Sauvegarde les favoris dans localStorage
+     */
     saveFavorites() {
         try {
             localStorage.setItem('imdbFavorites', JSON.stringify(this.favorites));
         } catch (error) {
-            console.error('Error saving favorites to localStorage:', error);
+            console.error('Erreur lors de la sauvegarde des favoris dans localStorage:', error);
         }
     }
 
-    // Check if a movie is in favorites
+    /**
+     * Vérifie si un film est dans les favoris
+     * @param {string} movieId - L'ID du film à vérifier
+     * @returns {boolean} - Vrai si le film est dans les favoris, faux sinon
+     */
     isInFavorites(movieId) {
         return this.favorites.some(fav => fav.id === movieId);
     }
 
-    // Get all favorites
+    /**
+     * Récupère tous les favoris
+     * @returns {Array} - Les films favoris
+     */
     getFavorites() {
         return this.favorites;
     }

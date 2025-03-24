@@ -1,20 +1,20 @@
 /**
- * Drag and drop functionality for favorite movies
- * Allows users to reorder their favorites using drag and drop
+ * Fonctionnalité glisser-déposer pour les films favoris
+ * Permet aux utilisateurs de réorganiser leurs favoris par glisser-déposer
  */
 
-// Store the currently dragged item
+// Stocke l'élément actuellement glissé
 let draggedItem = null;
 
 /**
- * Initialize drag and drop functionality
+ * Initialise la fonctionnalité de glisser-déposer
  */
 export function initializeDragAndDrop() {
-    // Find the favorites container
+    // Trouve le conteneur de favoris
     const favoritesContainer = document.getElementById('favorites-container');
     if (!favoritesContainer) return;
 
-    // Set up a MutationObserver to watch for new movie cards
+    // Configure un MutationObserver pour surveiller les nouvelles cartes de films
     const observer = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
             if (mutation.addedNodes.length) {
@@ -27,29 +27,29 @@ export function initializeDragAndDrop() {
         });
     });
 
-    // Start observing the favorites container
+    // Commence à observer le conteneur de favoris
     observer.observe(favoritesContainer, { childList: true });
 
-    // Also make container a drop zone
+    // Fait également du conteneur une zone de dépôt
     setupDropZone(favoritesContainer);
 }
 
 /**
- * Make a movie card draggable
- * @param {HTMLElement} element - The element to make draggable
+ * Rend une carte de film glissable
+ * @param {HTMLElement} element - L'élément à rendre glissable
  */
 function makeDraggable(element) {
-    // Add necessary attributes
+    // Ajoute les attributs nécessaires
     element.setAttribute('draggable', 'true');
     
-    // Add visual indicator that the card is draggable
+    // Ajoute un indicateur visuel que la carte est glissable
     element.style.cursor = 'grab';
     
-    // Add drag indicator
+    // Ajoute un indicateur de glissement
     const dragIndicator = document.createElement('div');
     dragIndicator.className = 'drag-indicator';
-    dragIndicator.innerHTML = '⋮⋮'; // "Burger menu" style indicator
-    dragIndicator.title = 'Drag to reorder';
+    dragIndicator.innerHTML = '⋮⋮'; // Indicateur de style "menu burger"
+    dragIndicator.title = 'Glisser pour réorganiser';
     dragIndicator.style.position = 'absolute';
     dragIndicator.style.right = '10px';
     dragIndicator.style.top = '10px';
@@ -57,21 +57,21 @@ function makeDraggable(element) {
     dragIndicator.style.fontSize = '16px';
     dragIndicator.style.opacity = '0.7';
     
-    // Add relative positioning to the card if it doesn't have it
+    // Ajoute un positionnement relatif à la carte si elle n'en a pas
     if (getComputedStyle(element).position === 'static') {
         element.style.position = 'relative';
     }
     
     element.appendChild(dragIndicator);
 
-    // Add drag event listeners
+    // Ajoute des écouteurs d'événements de glissement
     element.addEventListener('dragstart', handleDragStart);
     element.addEventListener('dragend', handleDragEnd);
 }
 
 /**
- * Set up a container as a drop zone
- * @param {HTMLElement} container - The container to make a drop zone
+ * Configure un conteneur comme zone de dépôt
+ * @param {HTMLElement} container - Le conteneur à transformer en zone de dépôt
  */
 function setupDropZone(container) {
     container.addEventListener('dragover', handleDragOver);
@@ -81,48 +81,48 @@ function setupDropZone(container) {
 }
 
 /**
- * Handle the start of a drag operation
- * @param {DragEvent} e - The drag event
+ * Gère le début d'une opération de glissement
+ * @param {DragEvent} e - L'événement de glissement
  */
 function handleDragStart(e) {
-    // Set data and reference the dragged item
+    // Définit les données et référence l'élément glissé
     draggedItem = this;
     
-    // Set the drag effect
+    // Définit l'effet de glissement
     e.dataTransfer.effectAllowed = 'move';
     
-    // Set some data (required for Firefox)
+    // Définit des données (requis pour Firefox)
     e.dataTransfer.setData('text/html', this.innerHTML);
     
-    // Add styling to show it's being dragged
+    // Ajoute un style pour montrer qu'il est en cours de glissement
     this.classList.add('dragging');
     
-    // Take a small delay to show the dragging visual effect
+    // Prend un petit délai pour montrer l'effet visuel de glissement
     setTimeout(() => {
         this.style.opacity = '0.6';
     }, 0);
 }
 
 /**
- * Handle the end of a drag operation
+ * Gère la fin d'une opération de glissement
  */
 function handleDragEnd() {
-    // Remove the dragging style
+    // Supprime le style de glissement
     this.classList.remove('dragging');
     this.style.opacity = '1';
     
-    // Reset all placeholder spaces
+    // Réinitialise tous les espaces réservés
     const dropPlaceholders = document.querySelectorAll('.drop-placeholder');
     dropPlaceholders.forEach(placeholder => placeholder.remove());
 }
 
 /**
- * Handle dragging over a drop target
- * @param {DragEvent} e - The drag event
+ * Gère le survol d'une cible de dépôt
+ * @param {DragEvent} e - L'événement de glissement
  */
 function handleDragOver(e) {
     if (e.preventDefault) {
-        e.preventDefault(); // Allows us to drop
+        e.preventDefault(); // Nous permet de déposer
     }
     
     e.dataTransfer.dropEffect = 'move';
@@ -131,47 +131,47 @@ function handleDragOver(e) {
 }
 
 /**
- * Handle entering a drop target
- * @param {DragEvent} e - The drag event
+ * Gère l'entrée dans une cible de dépôt
+ * @param {DragEvent} e - L'événement de glissement
  */
 function handleDragEnter(e) {
-    // Only process if we're entering the container itself or another movie card
+    // Traite uniquement si nous entrons dans le conteneur lui-même ou une autre carte de film
     const target = e.target.closest('.movie-card') || e.target.closest('#favorites-container');
     if (!target || target === draggedItem) return;
 
-    // Find all movie cards in the container
+    // Trouve toutes les cartes de film dans le conteneur
     const movieCards = Array.from(document.querySelectorAll('#favorites-container .movie-card'));
     
-    // If we're over another movie card, find where to insert the placeholder
+    // Si nous sommes au-dessus d'une autre carte de film, trouve où insérer l'espace réservé
     if (target.classList.contains('movie-card')) {
         const rect = target.getBoundingClientRect();
         const midpoint = rect.top + rect.height / 2;
         
-        // Determine if we're above or below the midpoint
+        // Détermine si nous sommes au-dessus ou en dessous du point médian
         if (e.clientY < midpoint) {
-            // Insert before the target
+            // Insère avant la cible
             if (target.previousElementSibling !== draggedItem) {
                 target.parentNode.insertBefore(createPlaceholder(), target);
             }
         } else {
-            // Insert after the target
+            // Insère après la cible
             if (target.nextElementSibling !== draggedItem) {
                 target.parentNode.insertBefore(createPlaceholder(), target.nextElementSibling);
             }
         }
     }
-    // If we're just over the container and there are no cards yet
+    // Si nous sommes juste au-dessus du conteneur et qu'il n'y a pas encore de cartes
     else if (target.id === 'favorites-container' && movieCards.length === 0) {
         target.appendChild(createPlaceholder());
     }
 }
 
 /**
- * Handle leaving a drop target
+ * Gère la sortie d'une cible de dépôt
  */
 function handleDragLeave() {
-    // Remove any placeholder if the mouse has left the area
-    // We use a delay to prevent flicker when moving between cards
+    // Supprime tout espace réservé si la souris a quitté la zone
+    // Utilise un délai pour éviter le scintillement lors du déplacement entre les cartes
     setTimeout(() => {
         const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
         if (!hoveredElement || !hoveredElement.closest('#favorites-container')) {
@@ -182,41 +182,41 @@ function handleDragLeave() {
 }
 
 /**
- * Handle drop event
- * @param {DragEvent} e - The drag event
+ * Gère l'événement de dépôt
+ * @param {DragEvent} e - L'événement de glissement
  */
 function handleDrop(e) {
     if (e.stopPropagation) {
-        e.stopPropagation(); // Stops some browsers from redirecting
+        e.stopPropagation(); // Empêche certains navigateurs de rediriger
     }
     
-    // Only process the drop if we have a draggedItem
+    // Traite le dépôt uniquement si nous avons un draggedItem
     if (!draggedItem) return false;
     
-    // Find the placeholder
+    // Trouve l'espace réservé
     const placeholder = document.querySelector('.drop-placeholder');
     if (placeholder) {
-        // Insert the dragged item where the placeholder is
+        // Insère l'élément glissé là où se trouve l'espace réservé
         placeholder.parentNode.insertBefore(draggedItem, placeholder);
         placeholder.remove();
     }
     
-    // Update the favorites order in storage
+    // Met à jour l'ordre des favoris dans le stockage
     updateFavoritesOrder();
     
     return false;
 }
 
 /**
- * Create a placeholder element for drop indication
- * @returns {HTMLElement} - The placeholder element
+ * Crée un élément d'espace réservé pour l'indication de dépôt
+ * @returns {HTMLElement} - L'élément d'espace réservé
  */
 function createPlaceholder() {
-    // Remove any existing placeholders
+    // Supprime les espaces réservés existants
     const existingPlaceholders = document.querySelectorAll('.drop-placeholder');
     existingPlaceholders.forEach(p => p.remove());
     
-    // Create a new placeholder
+    // Crée un nouvel espace réservé
     const placeholder = document.createElement('div');
     placeholder.className = 'drop-placeholder';
     placeholder.style.height = '10px';
@@ -229,37 +229,36 @@ function createPlaceholder() {
 }
 
 /**
- * Update the favorites order in localStorage
+ * Met à jour l'ordre des favoris dans le localStorage
  */
 function updateFavoritesOrder() {
-    // Get all favorite movie cards
+    // Récupère toutes les cartes de films favoris
     const favoriteCards = document.querySelectorAll('#favorites-container .movie-card');
     
-    // Extract movie IDs in their current order
+    // Extrait les ID de films dans leur ordre actuel
     const favoriteIds = Array.from(favoriteCards).map(card => {
-        // Get the movie ID from the card
-        // This assumes each card has a data attribute with the movie ID
+        // Récupère l'ID du film depuis la carte
         return card.dataset.movieId;
     });
     
-    // Get current favorites from localStorage
+    // Récupère les favoris actuels du localStorage
     let favorites = [];
     try {
         favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     } catch (error) {
-        console.error('Error parsing favorites from localStorage:', error);
+        console.error('Erreur lors de l\'analyse des favoris du localStorage:', error);
     }
     
-    // Reorder the favorites array based on the new order of IDs
+    // Réorganise le tableau des favoris en fonction du nouvel ordre des ID
     const reorderedFavorites = favoriteIds.map(id => 
         favorites.find(favorite => favorite.imdbID === id)
-    ).filter(Boolean); // Remove any undefined entries
+    ).filter(Boolean); // Supprime toutes les entrées undefined
     
-    // Save the reordered favorites back to localStorage
+    // Sauvegarde les favoris réorganisés dans le localStorage
     localStorage.setItem('favorites', JSON.stringify(reorderedFavorites));
 }
 
-// Initialize when the script is loaded
+// Initialise lorsque le script est chargé
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(initializeDragAndDrop, 1);
 } else {

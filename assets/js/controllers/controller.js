@@ -1,35 +1,41 @@
-// Controller - Coordinates Model and View
+// Contrôleur - Coordonne le Modèle et la Vue
 class MovieController {
     constructor(model, view) {
         this.model = model;
         this.view = view;
         
-        // Bind event handlers
+        // Lie les gestionnaires d'événements
         this.view.bindSearchEvents(
             this.handleSearch.bind(this),
             this.handleEnterKey.bind(this)
         );
         
-        // Initialize the view
+        // Initialise la vue
         this.updateFavoritesView();
     }
 
-    // Handle search button click
+    /**
+     * Gère le clic sur le bouton de recherche
+     */
     handleSearch() {
         this.performSearch();
     }
 
-    // Handle Enter key press
+    /**
+     * Gère l'appui sur la touche Entrée
+     */
     handleEnterKey() {
         this.performSearch();
     }
 
-    // Perform movie search with improved error handling
+    /**
+     * Effectue la recherche de films avec une meilleure gestion des erreurs
+     */
     async performSearch() {
         const query = this.view.getSearchQuery();
         
         if (!query) {
-            this.view.resultsContainer.innerHTML = '<p class="no-results">Please enter a search term.</p>';
+            this.view.resultsContainer.innerHTML = '<p class="no-results">Veuillez entrer un terme de recherche.</p>';
             return;
         }
         
@@ -44,49 +50,57 @@ class MovieController {
                 this.toggleFavorite.bind(this)
             );
         } catch (error) {
-            this.view.showError(`Failed to search movies: ${error.message || 'Unknown error'}`);
+            this.view.showError(`Échec de la recherche de films: ${error.message || 'Erreur inconnue'}`);
         }
     }
 
-    // Handle search results
+    /**
+     * Gère les résultats de la recherche
+     * @param {Array} results - Les résultats de la recherche
+     */
     handleSearchResults(results) {
-        // Prioritize results if clicked from suggestions
+        // Priorise les résultats si cliqués depuis les suggestions
         if (results && Array.isArray(results)) {
             const lastSelectedMovie = localStorage.getItem('last_selected_movie');
             if (lastSelectedMovie) {
                 try {
                     const selectedMovie = JSON.parse(lastSelectedMovie);
                     
-                    // Find the movie in results
+                    // Trouve le film dans les résultats
                     const selectedIndex = results.findIndex(movie => {
                         const movieId = movie['#IMDB_ID'] || movie.imdbID || movie.id;
                         return movieId === selectedMovie.id;
                     });
                     
-                    // Move it to the top if found
+                    // Le déplace en haut si trouvé
                     if (selectedIndex > 0) {
                         const movieToPromote = results.splice(selectedIndex, 1)[0];
                         results.unshift(movieToPromote);
                     }
                     
-                    // Clear for future searches
+                    // Efface pour les recherches futures
                     localStorage.removeItem('last_selected_movie');
                 } catch (error) {
-                    console.error('Error prioritizing selected movie:', error);
+                    console.error('Erreur lors de la priorisation du film sélectionné:', error);
                 }
             }
         }
-        
-        // Continue with regular result handling
-        // ...existing code...
     }
 
-    // Check if a movie is in favorites
+    /**
+     * Vérifie si un film est dans les favoris
+     * @param {string} movieId - L'ID du film
+     * @returns {boolean} - Vrai si le film est dans les favoris, faux sinon
+     */
     isInFavorites(movieId) {
         return this.model.isInFavorites(movieId);
     }
 
-    // Toggle favorite status
+    /**
+     * Bascule le statut favori
+     * @param {Object} movie - Le film à basculer
+     * @param {HTMLElement} button - Le bouton qui a été cliqué
+     */
     toggleFavorite(movie, button) {
         const isCurrentlyFavorite = this.model.isInFavorites(movie.id);
         
@@ -94,32 +108,38 @@ class MovieController {
             this.model.removeFromFavorites(movie.id);
             if (button) this.view.updateFavoriteButton(button, false);
             
-            // Also update any other buttons in search results with same movie ID
+            // Met également à jour tous les autres boutons dans les résultats de recherche avec le même ID de film
             this.updateAllButtonsForMovie(movie.id, false);
         } else {
             this.model.addToFavorites(movie);
             if (button) this.view.updateFavoriteButton(button, true);
             
-            // Also update any other buttons in search results with same movie ID
+            // Met également à jour tous les autres boutons dans les résultats de recherche avec le même ID de film
             this.updateAllButtonsForMovie(movie.id, true);
         }
         
-        // Update favorites display
+        // Met à jour l'affichage des favoris
         this.updateFavoritesView();
     }
     
-    // Update all buttons for a specific movie ID
+    /**
+     * Met à jour tous les boutons pour un ID de film spécifique
+     * @param {string} movieId - L'ID du film
+     * @param {boolean} isFavorite - Si le film est un favori ou non
+     */
     updateAllButtonsForMovie(movieId, isFavorite) {
-        // Find all buttons in search results for this movie
+        // Trouve tous les boutons dans les résultats de recherche pour ce film
         const allButtons = document.querySelectorAll(`.favorite-button[data-id="${movieId}"]`);
         allButtons.forEach(btn => {
-            if (btn !== document.activeElement) { // Skip the button that was just clicked
+            if (btn !== document.activeElement) { // Ignore le bouton qui vient d'être cliqué
                 this.view.updateFavoriteButton(btn, isFavorite);
             }
         });
     }
 
-    // Update favorites view
+    /**
+     * Met à jour la vue des favoris
+     */
     updateFavoritesView() {
         const favorites = this.model.getFavorites();
         this.view.displayFavorites(
