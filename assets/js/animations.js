@@ -61,29 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Special animations for favorites section
+    // Special animations for favorites section - COMPLETELY DISABLED to prevent flickering
     const favoritesContainer = document.getElementById('favorites-container');
     if (favoritesContainer) {
-        // Add a nice animation when favorite cards are added or removed
-        const favoritesObserver = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                if (mutation.addedNodes.length) {
-                    mutation.addedNodes.forEach(node => {
-                        if (node.nodeType === 1 && node.classList.contains('movie-card')) {
-                            animateFavoriteCard(node, 'add');
-                        }
-                    });
-                }
-                
-                if (mutation.removedNodes.length) {
-                    // Check if favorites is now empty
-                    const isEmpty = !favoritesContainer.querySelector('.movie-card');
-                    // Don't do anything special for empty state
-                }
-            });
-        });
-        
-        favoritesObserver.observe(favoritesContainer, { childList: true });
+        // No animations or observers for favorites to avoid flickering issues
     }
     
     // Special animations for results section
@@ -134,18 +115,10 @@ function removeHoverEffect(e) {
     this.style.transform = 'scale(1)';
 }
 
-// Add a function to animate favorite cards
-function animateFavoriteCard(card, action) {
-    if (action === 'add') {
-        card.style.opacity = 0;
-        card.style.transform = 'scale(0.8)';
-        
-        setTimeout(() => {
-            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            card.style.opacity = 1;
-            card.style.transform = 'scale(1)';
-        }, 10);
-    }
+// Remove animation function for favorite cards entirely
+function animateFavoriteCard(card) {
+    // No animations to prevent flickering
+    // Function left as a stub for compatibility
 }
 
 // Add a function to animate result cards with staggered timing

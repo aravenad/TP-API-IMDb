@@ -305,7 +305,8 @@ h2 {
 }
 
 .movie-card {
-    animation: fadeIn 0.5s ease-out;
+    animation: fadeIn 0.5s ease-out forwards;
+    will-change: opacity, transform;
 }
 
 /* Staggered animation for multiple cards */
@@ -325,10 +326,16 @@ h2 {
 
 /* Favorites section styling */
 .favorites-section .movie-card {
+    animation: none !important; /* Override the fadeIn animation */
     flex-direction: column;
     margin-bottom: 20px;
-    transition: all var(--transition-speed);
+    transition: none !important; /* Remove all transitions */
     border: 1px solid var(--border-color);
+}
+
+.favorites-section .movie-card:hover {
+    transform: none !important; /* Prevent hover transform */
+    box-shadow: 0 2px 8px var(--shadow-color); /* Keep consistent shadow */
 }
 
 .favorites-section .movie-poster {
@@ -384,6 +391,13 @@ h2 {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    transition: all 0.3s ease; /* Add smooth transition */
+}
+
+/* Prevent layout shifts with favorites container */
+#favorites-container {
+    min-height: 338px;
+    transition: none !important; /* Remove transitions */
 }
 
 /* Add magnifying glass icon to empty favorites container similar to no-results */
