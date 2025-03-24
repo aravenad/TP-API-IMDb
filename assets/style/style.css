@@ -123,8 +123,15 @@ h2 {
     outline: none;
 }
 
+/* Change border radius when suggestions are shown */
+.suggestions-container.active + #search-input,
 #search-input:focus {
     box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* When suggestions are active, modify search input border radius */
+.search-box:has(.suggestions-container.active) #search-input {
+    border-radius: 12px 12px 0 0;
 }
 
 #search-button {
@@ -705,7 +712,7 @@ h2 {
 .results-section .imdb-link {
     position: relative;
     z-index: 2;
-    max-width: calc(75% - 250px); /* Ensure space for the favorites button */
+    max-width: calc(75% - 230px); /* Ensure space for the favorites button */
 }
 
 .results-section .favorite-button {
@@ -727,4 +734,72 @@ h2 {
 /* Ensure both containers have exactly the same height */
 #results-container, #favorites-container {
     min-height: 338px;
+}
+
+/* Suggestions styling */
+.suggestions-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--card-background);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    z-index: 10;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none; /* Hidden by default */
+    border: 1px solid var(--border-color);
+    border-top: none; /* Remove top border to connect with input */
+    margin-top: -1px; /* Slight overlap to prevent gap */
+}
+
+.suggestions-container.active {
+    display: block;
+}
+
+/* ...existing code... */
+
+.suggestion-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 12px 12px;
+}
+
+.suggestion-item:hover {
+    background-color: var(--background-color);
+}
+
+.suggestion-title {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.suggestion-year {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-left: 8px;
+}
+
+.suggestion-highlight {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.suggestion-loading, 
+.suggestion-error, 
+.suggestion-no-results {
+    padding: 15px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.suggestion-error {
+    color: #ff453a;
 }

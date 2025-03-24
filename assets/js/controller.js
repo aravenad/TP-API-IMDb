@@ -37,6 +37,7 @@ class MovieController {
         
         try {
             const results = await this.model.searchMovies(query);
+            this.handleSearchResults(results);
             this.view.displayResults(
                 results,
                 this.isInFavorites.bind(this),
@@ -45,6 +46,39 @@ class MovieController {
         } catch (error) {
             this.view.showError(`Failed to search movies: ${error.message || 'Unknown error'}`);
         }
+    }
+
+    // Handle search results
+    handleSearchResults(results) {
+        // Prioritize results if clicked from suggestions
+        if (results && Array.isArray(results)) {
+            const lastSelectedMovie = localStorage.getItem('last_selected_movie');
+            if (lastSelectedMovie) {
+                try {
+                    const selectedMovie = JSON.parse(lastSelectedMovie);
+                    
+                    // Find the movie in results
+                    const selectedIndex = results.findIndex(movie => {
+                        const movieId = movie['#IMDB_ID'] || movie.imdbID || movie.id;
+                        return movieId === selectedMovie.id;
+                    });
+                    
+                    // Move it to the top if found
+                    if (selectedIndex > 0) {
+                        const movieToPromote = results.splice(selectedIndex, 1)[0];
+                        results.unshift(movieToPromote);
+                    }
+                    
+                    // Clear for future searches
+                    localStorage.removeItem('last_selected_movie');
+                } catch (error) {
+                    console.error('Error prioritizing selected movie:', error);
+                }
+            }
+        }
+        
+        // Continue with regular result handling
+        // ...existing code...
     }
 
     // Check if a movie is in favorites
