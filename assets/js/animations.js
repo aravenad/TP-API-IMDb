@@ -4,7 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // Add subtle hover effect to all interactive elements
-    const interactiveElements = document.querySelectorAll('button, .movie-card, .imdb-link');
+    const interactiveElements = document.querySelectorAll('button, .imdb-link');
     
     interactiveElements.forEach(element => {
         element.addEventListener('mouseenter', applyHoverEffect);
@@ -48,16 +48,71 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Add search input animation
+    // Remove search input animation
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
+        // Remove the scale animations
         searchInput.addEventListener('focus', () => {
-            searchInput.parentElement.style.transform = 'scale(1.01)';
+            // No transform applied
         });
         
         searchInput.addEventListener('blur', () => {
-            searchInput.parentElement.style.transform = 'scale(1)';
+            // No transform applied
         });
+    }
+    
+    // Special animations for favorites section
+    const favoritesContainer = document.getElementById('favorites-container');
+    if (favoritesContainer) {
+        // Add a nice animation when favorite cards are added or removed
+        const favoritesObserver = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.addedNodes.length) {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1 && node.classList.contains('movie-card')) {
+                            animateFavoriteCard(node, 'add');
+                        }
+                    });
+                }
+                
+                if (mutation.removedNodes.length) {
+                    // Check if favorites is now empty
+                    const isEmpty = !favoritesContainer.querySelector('.movie-card');
+                    // Don't do anything special for empty state
+                }
+            });
+        });
+        
+        favoritesObserver.observe(favoritesContainer, { childList: true });
+    }
+    
+    // Special animations for results section
+    const resultsContainer = document.getElementById('results-container');
+    if (resultsContainer) {
+        const resultsObserver = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.addedNodes.length) {
+                    // Check if this is a new search (container was cleared first)
+                    const isNewSearch = Array.from(mutation.addedNodes).some(node => 
+                        node.nodeType === 1 && 
+                        (node.classList.contains('loading') || node.classList.contains('no-results'))
+                    );
+                    
+                    // Add staggered animation to new result cards
+                    const newCards = Array.from(mutation.addedNodes).filter(
+                        node => node.nodeType === 1 && node.classList.contains('movie-card')
+                    );
+                    
+                    if (newCards.length) {
+                        newCards.forEach((card, index) => {
+                            animateResultCard(card, index);
+                        });
+                    }
+                }
+            });
+        });
+        
+        resultsObserver.observe(resultsContainer, { childList: true });
     }
 });
 
@@ -79,8 +134,36 @@ function removeHoverEffect(e) {
     this.style.transform = 'scale(1)';
 }
 
+// Add a function to animate favorite cards
+function animateFavoriteCard(card, action) {
+    if (action === 'add') {
+        card.style.opacity = 0;
+        card.style.transform = 'scale(0.8)';
+        
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            card.style.opacity = 1;
+            card.style.transform = 'scale(1)';
+        }, 10);
+    }
+}
+
+// Add a function to animate result cards with staggered timing
+function animateResultCard(card, index) {
+    card.style.opacity = 0;
+    card.style.transform = 'translateY(20px)';
+    
+    setTimeout(() => {
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        card.style.opacity = 1;
+        card.style.transform = 'translateY(0)';
+    }, 100 + (index * 100)); // Staggered delay based on card index
+}
+
 // Export the animation module for potential reuse
 export const animations = {
     applyHoverEffect,
-    removeHoverEffect
+    removeHoverEffect,
+    animateFavoriteCard,
+    animateResultCard
 };

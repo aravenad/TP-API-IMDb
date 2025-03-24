@@ -31,18 +31,31 @@
             </div>
         </div>
         
-        <div class="results-section">
-            <h2>Results</h2>
-            <div id="results-container"></div>
-        </div>
-        
-        <div class="favorites-section">
-            <h2>My Favorites</h2>
-            <div id="favorites-container"></div>
+        <div class="main-content">
+            <div class="content-column primary">
+                <div class="results-section">
+                    <h2>Results</h2>
+                    <div id="results-container">
+                        <div class="no-results">
+                            Search for a movie or TV show to see results
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-column secondary">
+                <div class="favorites-section">
+                    <h2>My Favorites</h2>
+                    <div id="favorites-container">
+                        <!-- Empty container to start with -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/animations.js"></script>
     <script>
         // Dark mode functionality
         const themeToggle = document.getElementById('theme-toggle');
@@ -62,6 +75,17 @@
         const showLoading = (container) => {
             container.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
         };
+        
+        // Check if favorites container is empty and show appropriate message
+        const checkFavoritesEmpty = () => {
+            // No need to do anything if there are no favorites
+            // Empty state is handled by CSS
+        };
+        
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // No need to check for empty favorites
+        });
     </script>
 </body>
 </html>

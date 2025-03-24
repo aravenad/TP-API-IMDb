@@ -19,3 +19,44 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 });
+
+// Note: This is a modification suggestion for the movie card creation function
+
+// When creating movie cards for search results, make sure to use this structure:
+function createMovieCard(movie, isFavorite = false) {
+    // ...existing code...
+    
+    // For results section cards, wrap the IMDb link and favorite button in a container
+    if (!isFavorite) {
+        // Create action row div 
+        const actionRow = document.createElement('div');
+        actionRow.className = 'action-row';
+        
+        // Add IMDb link to action row
+        const imdbLink = document.createElement('a');
+        imdbLink.href = `https://www.imdb.com/title/${movie.imdbID}`;
+        imdbLink.className = 'imdb-link';
+        imdbLink.textContent = 'View on IMDb';
+        imdbLink.target = '_blank';
+        actionRow.appendChild(imdbLink);
+        
+        // Add favorite button to action row
+        const favoriteButton = document.createElement('button');
+        favoriteButton.className = 'favorite-button';
+        favoriteButton.textContent = isFavorite ? 'Remove from Favorites' : 'Add to Favorites';
+        favoriteButton.onclick = () => toggleFavorite(movie);
+        actionRow.appendChild(favoriteButton);
+        
+        // Add action row to movie info
+        movieInfo.appendChild(actionRow);
+    } else {
+        // For favorites, keep the button at the bottom
+        const favoriteButton = document.createElement('button');
+        favoriteButton.className = 'favorite-button remove';
+        favoriteButton.textContent = 'Remove from Favorites';
+        favoriteButton.onclick = () => toggleFavorite(movie);
+        movieInfo.appendChild(favoriteButton);
+    }
+    
+    // ...existing code...
+}
