@@ -6,7 +6,7 @@ class MovieController {
         
         // Lie les gestionnaires d'événements
         this.view.bindSearchEvents(
-            this.handleSearch.bind(this),
+            this.handleSearch.bind(this), // bind() pour lier le contexte du contrôleur
             this.handleEnterKey.bind(this)
         );
         
@@ -29,7 +29,7 @@ class MovieController {
     }
 
     /**
-     * Effectue la recherche de films avec une meilleure gestion des erreurs
+     * Effectue la recherche de films
      */
     async performSearch() {
         const query = this.view.getSearchQuery();
@@ -75,7 +75,7 @@ class MovieController {
                     // Le déplace en haut si trouvé
                     if (selectedIndex > 0) {
                         const movieToPromote = results.splice(selectedIndex, 1)[0];
-                        results.unshift(movieToPromote);
+                        results.unshift(movieToPromote); // unshift() pour ajouter au début
                     }
                     
                     // Efface pour les recherches futures

@@ -8,8 +8,6 @@ const view = {
     
     // Icône de film simple encodée en Base64
     placeholderImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTUwIiBmaWxsPSIjODg4ODg4Ij48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2VlZWVlZSIvPjxwYXRoIGQ9Ik0zMCA0MEg3MHYySDMwek0zMCA4MEg3MHYySDMwek0zMCAxMjBINzB2MkgzMHpNMjAgMjBIODB2MTBIMjB6TTIwIDYwSDgwdjEwSDIwek0yMCAxMDBIODB2MTBIMjB6Ii8+PHRleHQgeD0iNTAiIHk9IjQ1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1vdmllPC90ZXh0Pjwvc3ZnPg==',
-    // URL de secours en cas d'échec du Base64
-    fallbackPlaceholderUrl: 'https://via.placeholder.com/100x150?text=Film',
 
     // Configure les écouteurs d'événements avec des fonctions de rappel
     bindSearchEvents(handleSearch, handleEnterKey) {
@@ -42,11 +40,6 @@ const view = {
         imgElement.onerror = () => {
             imgElement.src = this.placeholderImage;
             imgElement.alt = 'Image du film';
-            
-            imgElement.onerror = () => {
-                imgElement.src = this.fallbackPlaceholderUrl;
-                imgElement.onerror = null;
-            };
         };
     },
 
@@ -66,7 +59,7 @@ const view = {
             }
             
             try {
-                const movieId = movie['#IMDB_ID'] || `movie_${Math.random().toString(36).substr(2, 9)}`;
+                const movieId = movie['#IMDB_ID'] || `movie_${Math.random().toString(36).substr(2, 9)}`; // Génère un ID aléatoire si non disponible pour éviter les doublons
                 const isFavorite = isFavoriteCallback(movieId);
                 
                 const movieCard = document.createElement('div');

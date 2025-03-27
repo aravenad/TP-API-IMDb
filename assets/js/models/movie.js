@@ -50,7 +50,7 @@ class MovieModel {
      * @returns {boolean} - Vrai si le film a été ajouté, faux sinon
      */
     addToFavorites(movie) {
-        if (!this.favorites.some(fav => fav.id === movie.id)) {
+        if (!this.isInFavorites(movie.id)) {
             this.favorites.push(movie);
             this.saveFavorites();
             return true;
@@ -90,7 +90,7 @@ class MovieModel {
      * @returns {boolean} - Vrai si le film est dans les favoris, faux sinon
      */
     isInFavorites(movieId) {
-        return this.favorites.some(fav => fav.id === movieId);
+        return this.favorites.some(fav => fav.id === movieId); // some() parcourt le tableau et renvoie vrai si un élément correspond au prédicat
     }
 
     /**

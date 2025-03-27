@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Structure suggérée pour la création de cartes de films
 function createMovieCard(movie, isFavorite = false) {
-    // ...existing code...
     
     // Pour les cartes de la section résultats, enveloppe le lien IMDb et le bouton favoris dans un conteneur
     if (!isFavorite) {
@@ -64,58 +63,10 @@ function createMovieCard(movie, isFavorite = false) {
         // Ajout de la ligne d'actions aux infos du film
         movieInfo.appendChild(actionRow);
     } else {
-        // Pour les favoris, garde le bouton en bas
         const favoriteButton = document.createElement('button');
         favoriteButton.className = 'favorite-button remove';
         favoriteButton.textContent = 'Retirer des Favoris';
         favoriteButton.onclick = () => toggleFavorite(movie);
         movieInfo.appendChild(favoriteButton);
     }
-    
-    // ...existing code...
-}
-
-// Fonction pour prioriser les films sélectionnés dans les suggestions
-function prioritizeSearchResults(results) {
-    // Si pas de résultats ou pas un tableau, retourne tel quel
-    if (!results || !Array.isArray(results)) return results;
-    
-    try {
-        // Vérifie s'il y a un film récemment sélectionné dans les suggestions
-        const lastSelectedMovie = localStorage.getItem('last_selected_movie');
-        if (lastSelectedMovie) {
-            const selectedMovie = JSON.parse(lastSelectedMovie);
-            
-            // Trouve l'index du film sélectionné dans les résultats
-            const selectedMovieIndex = results.findIndex(movie => {
-                const movieId = movie['#IMDB_ID'] || movie.imdbID || movie.id;
-                return movieId === selectedMovie.id;
-            });
-            
-            // Si trouvé, déplace-le au début du tableau de résultats
-            if (selectedMovieIndex > 0) {
-                console.log(`[Main] Déplacement du film sélectionné "${selectedMovie.title}" en haut des résultats`);
-                const movieToPromote = results.splice(selectedMovieIndex, 1)[0];
-                results.unshift(movieToPromote);
-            }
-            
-            // Efface le dernier film sélectionné pour éviter d'affecter les recherches futures
-            localStorage.removeItem('last_selected_movie');
-        }
-    } catch (error) {
-        console.error('[Main] Erreur lors de la priorisation des résultats:', error);
-    }
-    
-    return results;
-}
-
-// Exemple d'intégration de cette fonction
-function processResults(results) {
-    // Priorise le film sélectionné s'il y en a un
-    results = prioritizeSearchResults(results);
-    
-    // Continue avec le traitement normal
-    // ...existing code...
-    
-    return results;
 }
